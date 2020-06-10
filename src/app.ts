@@ -55,7 +55,6 @@ bind(app, sort(parse(Routes)));
 /**
  * Catch 404 and forward error to handler
  */
-
 app.use((req, res, next) => {
   const err: any = new Error('Not Found');
   err.statusCode = 404;
@@ -70,7 +69,7 @@ app.use((req, res, next) => {
  */
 app.use((err, req, res, next) => {
   if (!res.headersSent) {
-    res.status(err.statusCode).send(err.statusMessage);
+    res.status(err.statusCode || 500).send(err.statusMessage || STATUS_CODES[500]);
   }
 });
 
