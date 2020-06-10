@@ -106,3 +106,4 @@ dist
 # repo specific
 lib/
 __coverage__/
+debug.log
