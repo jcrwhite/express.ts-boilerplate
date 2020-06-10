@@ -3,8 +3,13 @@ import { normalizePort } from './utils/port';
 import http from 'http';
 import logger from './services/logger';
 
+// define our port or fall back
 const PORT = normalizePort(process.env.PORT || 1337);
 
+/**
+ * catch errors thrown when trying to bind server to port
+ * @param error Node HTTP error
+ */
 const onError = (error: any) => {
   switch (error.code) {
     case 'EACCES': {
@@ -24,6 +29,9 @@ const onError = (error: any) => {
   }
 };
 
+/**
+ * log server info once we have successfully bound to a port and are listening
+ */
 const onListening = () => {
   logger.info(`Running in ${process.env.NODE_ENV || 'development'} mode`);
   const addr = server.address();
@@ -31,13 +39,25 @@ const onListening = () => {
   logger.info(`Listening on ${bind}`);
 };
 
+/**
+ * express instance
+ */
 App.set('port', PORT);
 
+/**
+ * Bind expresso the Node http server
+ */
 const server = http.createServer(App);
 
+/**
+ * Listen to some events on the http server itself
+ */
 server.on('error', onError);
 server.on('listening', onListening);
 
+/**
+ * Attempt to gracefully shutdown when asked, commit suicide after 10 seconds
+ */
 const onExit = () => {
   if (!server) {
     process.exit(1);
@@ -54,8 +74,13 @@ const onExit = () => {
   }, 10000);
 };
 
+/**
+ * Be polite and react to sigterm and sigint
+ */
 process.on('SIGINT', onExit);
 process.on('SIGTERM', onExit);
 
-// start server
+/**
+ * start server
+ */
 server.listen(PORT);
