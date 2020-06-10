@@ -1,0 +1,66 @@
+{
+  "name": "express.ts-boilerplate",
+  "version": "1.0.0",
+  "description": "A basic express server using typescript",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "PORT=1337 npm run build && node lib/index.js",
+    "test": "jest --verbose --config jest.config.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcrwhite/express.ts-boilerplate.git"
+  },
+  "keywords": [
+    "express",
+    "server",
+    "typescript"
+  ],
+  "files": [
+    "lib/**/*"
+  ],
+  "engines": {
+    "node": ">=10.13.0",
+    "npm": ">=6.4.1"
+  },
+  "author": {
+    "name": "Josh White",
+    "email": "coding.in.the.clouds@gmail.com",
+    "url": "https://github.com/jcrwhite"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jcrwhite/express.ts-boilerplate/issues"
+  },
+  "homepage": "https://github.com/jcrwhite/express.ts-boilerplate#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.6",
+    "@types/helmet": "0.0.47",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "@types/winston": "^2.4.4",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.0",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "morgan": "^1.10.0",
+    "winston": "^3.2.1"
+  }
+}
