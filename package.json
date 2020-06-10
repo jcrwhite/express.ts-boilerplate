@@ -1,6 +1,6 @@
 {
   "name": "express.ts-boilerplate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A basic express server using typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
