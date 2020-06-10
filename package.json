@@ -1,6 +1,6 @@
 {
   "name": "express.ts-boilerplate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A basic express server using typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,7 +8,7 @@
     "start": "PORT=1337 npm run build && node lib/index.js",
     "test": "jest --verbose --config jest.config.json",
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
