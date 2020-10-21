@@ -1,8 +1,12 @@
 import { RoutesConfig, Route } from '../models/routes';
-import { Express } from 'express';
+import { Express, Request, Response, json, urlencoded } from 'express';
 import { Controllers } from '../controllers';
 import { Policies } from '../policies';
 import logger from '../services/logger';
+import { proxy } from '../services/proxy';
+
+const parseJson = json({ limit: '10mb' });
+const parseForm = urlencoded({ extended: false, limit: '100mb' });
 
 const pattern = /^\s*(all|get|put|patch|post|delete|trace|options|connect|head)\s+/i;
 
@@ -20,23 +24,36 @@ const normalizePath = (key: string): { method: Route['method']; path: string } =
   return normalized;
 };
 
-const normalizeHandlers = (config: { controller: string; policies?: string[] }): Partial<Route> => {
-  const [controller, handler] = config.controller.split('.').filter(Boolean);
+const normalizeHandlers = (config: { controller?: string; policies?: string[]; proxy?: any }): Partial<Route> => {
+  const [controller, handler] = (config.controller || '').split('.').filter(Boolean);
   return {
     controller,
     handler,
+    proxy: config.proxy,
     policies: config.policies,
   };
 };
 
-const initHandlers = (route: Route): (() => any)[] => {
-  const handlers: (() => any)[] = [];
+const initHandlers = (route: Route): ((req: Request, res: Response, next?: () => void) => any)[] => {
+  const handlers: ((req: Request, res: Response, next?: () => void) => any)[] = [];
+  if (!route.proxy) {
+    handlers.push(parseJson as any);
+    handlers.push(parseForm as any);
+  }
   if (route.policies) {
     route.policies.forEach(p => {
       handlers.push(Policies[p]);
     });
   }
-  handlers.push(Controllers[route.controller][route.handler]);
+  if (route.proxy) {
+    const { host, path, port, https } = route.proxy;
+    handlers.push((req: Request, res: Response) => {
+      proxy(req, res, host, path, port, !!https);
+    });
+  } else {
+    handlers.push(Controllers[route.controller as string][route.handler]);
+  }
+  console.log(handlers as any);
   return handlers;
 };
 

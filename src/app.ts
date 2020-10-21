@@ -20,8 +20,6 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', { str
 /**
  * Global server configuration
  */
-app.use(express.json({ limit: '10mb' })); // set json body parsing
-app.use(express.urlencoded({ extended: false, limit: '100mb' })); // allow form parsing and file upload
 app.use(
   cors({
     origin: '*', // allow all hosts for CORS
@@ -68,6 +66,10 @@ app.use((req, res, next) => {
  * Error handler
  */
 app.use((err, req, res, next) => {
+  logger.error(
+    `ERROR: CODE: ${err.statusCode || 500} | MESSAGE: ${err.statusMessage || STATUS_CODES[err.statusCode || 500]}`
+  );
+  logger.error(err);
   if (!res.headersSent) {
     res.status(err.statusCode || 500).send(err.statusMessage || STATUS_CODES[500]);
   }

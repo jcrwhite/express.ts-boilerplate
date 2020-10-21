@@ -103,7 +103,11 @@ dist
 # TernJS port file
 .tern-port
 
-# repo specific
-lib/
-__coverage__/
-debug.log
+# Typescript build output
+/lib
+
+# Jest Coverage
+/__coverage__
+
+# MacOS files
+**/.DS_Store

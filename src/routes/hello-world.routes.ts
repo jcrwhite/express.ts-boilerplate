@@ -20,4 +20,11 @@ export const HelloWorld: RoutesConfig = {
   'GET /greet/:id': {
     controller: 'HelloWorld.greet',
   },
+  'GET /test': {
+    proxy: {
+      host: 'localhost',
+      port: 3000,
+      path: '/world',
+    },
+  },
 };

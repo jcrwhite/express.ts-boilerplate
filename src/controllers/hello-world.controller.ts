@@ -3,13 +3,11 @@ const hello = (req, res) => {
 };
 
 const world = (req, res) => {
-  return res.status(200).json({ message: 'Hello' });
+  return res.status(200).json({ message: 'World' });
 };
 
 const greet = (req, res) => {
   return res.status(200).send(`Hello ${req.params.id}!`);
 };
 
-const HelloWorld = { hello, world, greet };
-
-export default HelloWorld;
+export const HelloWorld = { hello, world, greet };
